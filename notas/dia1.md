@@ -376,7 +376,9 @@ Son pruebas que VUELVO a ejecutar para ver que no haya roto nada después de un 
 SCRUM es una metodología de GESTION DE PROYECTOS
 TDD es una metodología de DESARROLLO DE SOFTWARE
 Test-First: Lo primero hago las pruebas... y las pruebas me van a guiar en el desarrollo de mi software
-TDD? Test-first + Refactorización en cada iteración.
+TDD? Test-first + Refactorización en cada iteración.    -> Unitarias
+BDD: Behavior driven development                        -> Sistema
+ATDD: Aceptance Test
 
 Cuál es la principal característica de usar una met. ágil?
 - Entregar mi producto de forma incremental a mi cliente para tener un rápido feedback.
@@ -427,6 +429,7 @@ SOLID Principios de diseño de software: Uncle BOB > Sirven para crear software 
                 let animalito:Animalito = funcionDeMapeo(animalito);
                 this.repositorio.guardarAnimalito(animalito);
                 // Mandar correos...
+
         }
     }
 
@@ -480,3 +483,23 @@ FRONT                                                                       BACK
     Cliente -> Servidor (http://)
 
 # Sistema de notificación de nuevas mascotas al que la gente se puede subscribir
+
+
+# Test double 
+
+Cuando hago una prueba donde hay comunicación entre componentes
+
+        Componente A --------> Componente B
+                     <--------
+    
+        Hay veces que me basta con centrarme en --------> Spy // MOCK
+        Hay veces que me basta con centrarme en <-------- Stub       
+        Si necesito comprobar las 2... monto un Fake
+    
+        Dummy... cuando no me interesa controlar ni lo uno, ni lo otro
+
+
+# DEVOPS
+
+Cultura, es un movimiento, es una filosofía en pro de la AUTOMATIZACION !
+Automatizar qué? Todo lo que hay entre el dev ----> ops
