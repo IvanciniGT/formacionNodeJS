@@ -137,7 +137,7 @@ describe("Dado un servicio de animalitos", () => {
             expect(emailServiceSpy.asunto).toEqual("Nuevo animalito")
             expect(emailServiceSpy.mensaje).toEqual(`Se ha dado de alta un nuevo animalito con nombre ${nombre}`)
         }) 
-
+        // Y envía una notificación a los suscriptores
         // ESTO SERIA MEDIANTE UN MOCK
         it("y se envía un email a altas@animalitos-fermin.com ...", async () => {
             expect(emailServiceMock.teHanLlamado()).toBeTruthy()

@@ -503,3 +503,10 @@ Cuando hago una prueba donde hay comunicación entre componentes
 
 Cultura, es un movimiento, es una filosofía en pro de la AUTOMATIZACION !
 Automatizar qué? Todo lo que hay entre el dev ----> ops
+
+
+Repositorio
+    comenzarTransaccion -> Transaccion (MIO)
+    guardarAnimalito(DatosAnimalito, Transaccion)
+    acabarTransaccion(Transaccion)
+    rollbackTransaccion(Transaccion)
