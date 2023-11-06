@@ -5,21 +5,9 @@ import { AnimalitoRepository } from "../persistence/repository/animalito.reposit
 import { Animalito } from "../persistence/model/animalito";
 import { DatosAnimalito } from "../persistence/model/datos.animalito";
 import { EmailService } from "./email.service";
+import { AnimalitoServiceImpl } from "./impl/animalitos.service.impl";
+import { getMapeadorDeAnimalitoService } from "../app/dependencias";
 
-/*import { AnimalitoDTO } from "./model/animalito";
-import { DatosAnimalitoDTO } from "./model/datos.animalito";
-import { NotificacionAnimalito } from "./model/notificacion.animalito";
-
-export interface AnimalitoService {
-
-    newAnimalito(animalito: DatosAnimalitoDTO): Promise<AnimalitoDTO>;
-    get(id: number): Promise<AnimalitoDTO | undefined>;
-    delete(id: number): Promise<AnimalitoDTO>;
-    getAll(): Promise<AnimalitoDTO[]>;
-    update(id: number, animalito: Partial<DatosAnimalitoDTO>): Promise<AnimalitoDTO>;
-    subscribe(callback:(notificacion: NotificacionAnimalito) => void): () => void;
-}
-*/
 class EmailServiceDummy implements EmailService {
     enviarEmail(destinatario: string, asunto: string, mensaje: string): Promise<void> {
         return Promise.resolve();
@@ -100,7 +88,7 @@ let emailServiceMock = new EmailServiceMock()
 function getServicioDeAnimalitos(): AnimalitoService {
     // Tendré que hacer que funcione contra el repo de pacotilla
     // TODO
-    return new AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceSpy);
+    return new AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceSpy, getMapeadorDeAnimalitoService());
 }
 
 // UNITARIAS DEL SERVICIO DE ANIMALITOS

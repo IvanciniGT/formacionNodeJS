@@ -1,4 +1,4 @@
-import { HttpError } from "./impl/http.error";
+import { HttpRespuesta } from "./impl/http.respuesta";
 import { AnimalitoRestV1 } from "./model/animalito";
 import { DatosAnimalitoRestV1 } from "./model/datos.animalito";
 
@@ -7,10 +7,10 @@ import { DatosAnimalitoRestV1 } from "./model/datos.animalito";
 //  Router
 export interface AnimalitoControllerV1{
 
-    newAnimalito(animalito: DatosAnimalitoRestV1): Promise<AnimalitoRestV1 | HttpError>;
-    get(id: number): Promise<AnimalitoRestV1 | HttpError>;
-    delete(id: number): Promise<AnimalitoRestV1| HttpError>;
-    getAll(): Promise<AnimalitoRestV1[]| HttpError>;
-    update(id: number, animalito: Partial<DatosAnimalitoRestV1>): Promise<AnimalitoRestV1| HttpError>;
+    newAnimalito(animalito: DatosAnimalitoRestV1): Promise<HttpRespuesta<AnimalitoRestV1>>;
+    get(id: number): Promise<HttpRespuesta<AnimalitoRestV1>>;
+    delete(id: number): Promise<HttpRespuesta<AnimalitoRestV1>>;
+    getAll(): Promise<HttpRespuesta<AnimalitoRestV1[]>>;
+    update(id: number, animalito: Partial<DatosAnimalitoRestV1>): Promise<HttpRespuesta<AnimalitoRestV1>>;
 
 }

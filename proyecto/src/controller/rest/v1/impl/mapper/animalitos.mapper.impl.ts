@@ -4,7 +4,7 @@ import { AnimalitoRestV1 } from "../../model/animalito";
 import { DatosAnimalitoRestV1 } from "../../model/datos.animalito";
 import { MapeadorDeAnimalitos } from "./animalitos.mapper";
 
-export class  MapeadorDeAnimalitosImpl implements  MapeadorDeAnimalitos {
+export class  MapeadorDeAnimalitosV1Impl implements  MapeadorDeAnimalitos {
     toDatosAModificarDTO(datosAModificarRestV1: Partial<DatosAnimalitoRestV1>): Partial<DatosAnimalitoDTO> {
         return {...datosAModificarRestV1}
     }

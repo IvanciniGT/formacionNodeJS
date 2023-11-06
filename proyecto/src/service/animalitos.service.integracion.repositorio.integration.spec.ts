@@ -5,6 +5,8 @@ import { AnimalitoRepository } from "../persistence/repository/animalito.reposit
 import { Animalito } from "../persistence/model/animalito";
 import { DatosAnimalito } from "../persistence/model/datos.animalito";
 import { EmailService } from "./email.service";
+import { getAnimalitosRepository, getMapeadorDeAnimalitoService } from "../app/dependencias";
+import { AnimalitoServiceImpl } from "./impl/animalitos.service.impl";
 
 /*import { AnimalitoDTO } from "./model/animalito";
 import { DatosAnimalitoDTO } from "./model/datos.animalito";
@@ -41,11 +43,11 @@ function asegurarDatosDeAnimalito(nombre: string, raza: string, edad: number, an
     expect(animalito.raza).toEqual(raza)
 }
 
-let repositorioDeAnimalitos = new RepositorioDeAnimalitosImpl()
+let repositorioDeAnimalitos = getAnimalitosRepository();
 function getServicioDeAnimalitos(): AnimalitoService {
     // Tendré que hacer que funcione contra el repo de pacotilla
     // TODO
-    return new AnimalitoServiceImpl(repositorioDeAnimalitos, new EmailServiceDummy());
+    return new AnimalitoServiceImpl(repositorioDeAnimalitos, new EmailServiceDummy(), getMapeadorDeAnimalitoService());
 }
 
 // UNITARIAS DEL SERVICIO DE ANIMALITOS

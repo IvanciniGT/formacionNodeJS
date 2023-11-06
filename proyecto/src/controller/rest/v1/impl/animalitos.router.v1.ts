@@ -1,6 +1,7 @@
 import { Router, Request, Response} from 'express'
 import { AnimalitoControllerV1 } from '../animalito.controller.v1';
 import { AnimalitoRestV1 } from '../model/animalito';
+import { HttpRespuesta } from './http.respuesta';
 
 class AnimalitoRouterV1 {
 
@@ -8,21 +9,18 @@ class AnimalitoRouterV1 {
 
     async getAll(request:Request, response:Response){
         this.intenta(request, response, async (request, response)=>{
-            let animalitos:AnimalitoRestV1[] = await this.controladorAnimalitosV1.getAll();
-            response.json(animalitos);
+            return await this.controladorAnimalitosV1.getAll();
         });
     }
 
     async newAnimalito(request:Request, response:Response){
         this.intenta(request, response, async (request, response)=>{
-            let animalito:AnimalitoRestV1 = await this.controladorAnimalitosV1.newAnimalito(request.body as AnimalitoRestV1);
-            response.json(animalito);
+            return await this.controladorAnimalitosV1.newAnimalito(request.body as AnimalitoRestV1);
         });
     }
     async delete(request:Request, response:Response){
         this.intenta(request, response, async (request, response)=>{
-            let animalito:AnimalitoRestV1 = await this.controladorAnimalitosV1.delete(parseInt(request.params.id));
-            response.json(animalito);
+            return await this.controladorAnimalitosV1.delete(parseInt(request.params.id));
         });
     }
     async get(request:Request, response:Response){
@@ -32,16 +30,16 @@ class AnimalitoRouterV1 {
     }
     async update(request:Request, response:Response){
         this.intenta(request, response, async (request, response)=>{
-            let animalito:AnimalitoRestV1 = await this.controladorAnimalitosV1.update(parseInt(request.params.id), request.body as Partial<AnimalitoRestV1>);
-            response.json(animalito);
+            return await this.controladorAnimalitosV1.update(parseInt(request.params.id), request.body as Partial<AnimalitoRestV1>);
         });
     }
 
-    private async intenta( request:Request, response:Response, codigo: (request:Request, response:Response) => Promise<void> ): Promise<void> {
+    private async intenta( request:Request, response:Response, codigo: (request:Request, response:Response) => Promise<HttpRespuesta<any>> ): Promise<void> {
         try{
-            await codigo(request, response);
+            let respuesta:HttpRespuesta<any>=await codigo(request, response);
+            response.status(respuesta.code).json(respuesta.body);
         }catch(error){
-            response.status(500).json({error});
+            response.status(500).json({error: error});
         }
     }
 

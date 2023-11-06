@@ -1,16 +1,5 @@
-/*import { Animalito } from "../model/animalito";
-import { DatosAnimalito } from "../model/datos.animalito";
 
-export interface AnimalitoRepository {
-
-    newAnimalito(animalito: DatosAnimalito): Promise<Animalito>;
-    get(id: number): Promise<Animalito | undefined>;
-    delete(id: number): Promise<Animalito>;
-    getAll(): Promise<Animalito[]>;
-    update(id: number, animalito: Partial<DatosAnimalito>): Promise<Animalito>;
-
-}*/
-
+import { getAnimalitosRepository } from "../../app/dependencias";
 import { Animalito } from "../model/animalito";
 import { DatosAnimalito } from "../model/datos.animalito"
 import { AnimalitoRepository } from "./animalito.repository";
@@ -29,7 +18,7 @@ function asegurarDatosDeAnimalito(nombre: string, raza: string, edad: number, an
     expect(animalito.raza).toEqual(raza)
 }
 function getRepositorioDeAnimalitos(): AnimalitoRepository {
-    // TODO
+    return getAnimalitosRepository();
 }
 
 // UNITARIAS DEL REPOSITORIO DE ANIMALITOS
@@ -45,17 +34,17 @@ describe("Dado un repositorio de animalitos", () => {
         it("con nombre vacio, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito("", raza , edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expect(async () => await repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toThrow( "Nombre vacio" )
+            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Nombre vacio" )
         })
         it("con raza vacia, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, "" , edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expect(async () => await repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toThrow( "Raza vacia" )
+            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Raza vacia" )
         })
         it("con edad negativa, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, raza , -7);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expect(async () => await repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toThrow( "Edad negativa" )
+            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Edad negativa" )
         })
         it("con datos guays, entonces me devuelve los mismos datos guays, junto con un ID", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, raza , edad);
