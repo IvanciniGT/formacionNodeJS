@@ -10,6 +10,7 @@ import { AnimalitoServiceImpl } from '../service/impl/animalitos.service.impl';
 import { EmailsServiceImpl } from '../service/impl/email.service.impl';
 import { MapeadorDeAnimalitosImpl } from '../service/impl/mapper/animalitos.mapper.impl';
 import { MapeadorDeAnimalitos } from '../service/impl/mapper/animalitos.mapper';
+import { AnimalitoWSImpl } from '../controller/ws/animalito.ws.impl';
 
 
 
@@ -43,4 +44,6 @@ export function getAnimalitosController(): AnimalitoControllerV1{
     return controladorDeAnimalitos;
 }
 
-export const EnrutadorControladorRestV1DeAnimalitos = new AnimalitoRouterV1(getAnimalitosController())
+export const EnrutadorControladorRestV1DeAnimalitos = new AnimalitoRouterV1(getAnimalitosController()) // Inyección de dependencias
+
+export const AnimalitosWebSocket = new AnimalitoWSImpl(getAnimalitosService()); // Inyección de dependencias

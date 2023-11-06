@@ -2,7 +2,7 @@ import express from 'express';
 
 import * as dotenv from 'dotenv';
 import cors from 'cors';
-import { EnrutadorControladorRestV1DeAnimalitos } from './dependencias';
+import { AnimalitosWebSocket, EnrutadorControladorRestV1DeAnimalitos } from './dependencias';
 
 dotenv.config();
 
@@ -18,6 +18,7 @@ function getExpressServer(){
     app.use(cors())
     // Metemos los enrutadores
     app.use('/api/v1/animalitos', EnrutadorControladorRestV1DeAnimalitos.configureRouter());
+    AnimalitosWebSocket.configureWs(app);
     return app;
 }
 

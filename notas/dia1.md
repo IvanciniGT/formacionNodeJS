@@ -522,3 +522,26 @@ CUCUMBER me permite ejecutar esos ficheros gherkin
 
 El lenguaje Gherkin realmente no es tal.... es un conjunto de restricciones sobre lenguaje natural (humano)
 CUCUMBER tiene librerías en "todos" los lenguajes de programación que usamos actualmente
+
+---
+
+WebSockets
+
+WebSocket es un protocolo alternativo/complementario a HTTP
+Al trabajar con http, usamos una url de la forma: "http://..." || "https://..."
+Al trabajar con websockets, usamos una url de la forma: "ws://..." || "wss://..."
+La S en httpS y en wsS hace referencia a la capa TLS que montamos por encima del protocolo correspondiente.
+
+Me permite no evitar pero si frustrar (o al menos ayudarme a ello) 2 tipos de ataques:
+- Man in the Middle ... es cuando alguien espía una conversación entre 2 partes
+  - No hay manera de evitar que me escuchen... pero si mando los mensajes cifrados(encriptados) me escuchará... pero no se entera de nada de lo que hablo: 
+  - Algoritmos de clave simétrica: Solo tengo 1 clave que sirve tanto para cifrar como para descifrar
+  - Algoritmos de clave asimétrica: Tengo 2 claves: Una para cifrar (privada) y otra para descifrar(publica)
+  En tls el grueso de la comunicación se hace mediante clave simétrica... pero al principio de la comunicación se intercambian las claves simétricas mediante clave asimétrica.
+- Suplantación de identidad (phishing)
+  Básicamente que alguien me diga que es el servidor del banco... y en realidad sea un servidor pirata... es tan fácil como que me peguen el cambiazo en el dns... o una configuración de un router.
+  Para evitarlo trabajamos con certificados... que llevan la firma de una entidad certificadora de MI confianza.
+
+  La diferencia con WS es que es un protocolo de comunicación bidireccional... y que no se basa en el concepto de petición/respuesta... sino que se basa en el concepto de mensaje.
+
+    HTTP: Request -> Response

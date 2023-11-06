@@ -1,0 +1,43 @@
+import { Server, WebSocket} from 'ws';
+import { AnimalitoService } from '../../service/animalitos.service';
+import { NotificacionAnimalito } from '../../service/model/notificacion.animalito';
+
+export class AnimalitoWS{
+
+//    private readonly cambioEnLosAnimalitosComoLambda = (notificacion:NotificacionAnimalito) => {
+//
+//    }
+
+    private ws?:Server;
+
+    constructor(private readonly servicioDeAnimalitos:AnimalitoService){
+        //servicioDeAnimalitos.subscribe(this.cambioEnLosAnimalitos)
+        //servicioDeAnimalitos.subscribe(this.cambioEnLosAnimalitos.bind(this))
+        servicioDeAnimalitos.subscribe((notificacion:NotificacionAnimalito) => this.cambioEnLosAnimalitos(notificacion));
+
+    }
+
+    private cambioEnLosAnimalitos(notificacion:NotificacionAnimalito) {
+        if(!this.ws) return ;
+        console.log("Ha habido un cambio... notificamos a todos los clientes");
+        this.ws.clients.forEach((socket:WebSocket)=>{
+            socket.send(JSON.stringify(notificacion));
+        });
+    }
+
+    configureWs(port: number):Server{
+        this.ws = new Server({port});
+//        ws.on('connection', (socket:WebSocket)=>{
+//            socket.on('message', (message:string)=>{
+//                console.log('Mensaje recibido: %s', message);
+//            });
+//            socket.on('close', ()=>{
+//                console.log('Conexión cerrada');
+//            })
+                //socket.send('Hola desde el servidor');
+//            });
+        return this.ws;
+
+    }
+
+}
