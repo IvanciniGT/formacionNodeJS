@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnimalitoRouterV1 = void 0;
 const express_1 = require("express");
 class AnimalitoRouterV1 {
     constructor(controladorAnimalitosV1) {
@@ -70,3 +71,4 @@ class AnimalitoRouterV1 {
         return routerAnimalitosV1;
     }
 }
+exports.AnimalitoRouterV1 = AnimalitoRouterV1;

@@ -510,3 +510,15 @@ Repositorio
     guardarAnimalito(DatosAnimalito, Transaccion)
     acabarTransaccion(Transaccion)
     rollbackTransaccion(Transaccion)
+
+---
+
+Cucumber(penino) es un framework para pruebas... otro !
+
+Las pruebas(realmente los requisitos de mi sistema/componente) los definimos mediante lenguaje GHERKIN
+Ese lenguaje GHERKIN(pepinillo) definimos los requisitos
+
+CUCUMBER me permite ejecutar esos ficheros gherkin  
+
+El lenguaje Gherkin realmente no es tal.... es un conjunto de restricciones sobre lenguaje natural (humano)
+CUCUMBER tiene librerías en "todos" los lenguajes de programación que usamos actualmente

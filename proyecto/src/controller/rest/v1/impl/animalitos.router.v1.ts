@@ -3,7 +3,7 @@ import { AnimalitoControllerV1 } from '../animalito.controller.v1';
 import { AnimalitoRestV1 } from '../model/animalito';
 import { HttpRespuesta } from './http.respuesta';
 
-class AnimalitoRouterV1 {
+export class AnimalitoRouterV1 {
 
     constructor(private readonly controladorAnimalitosV1: AnimalitoControllerV1){}
 

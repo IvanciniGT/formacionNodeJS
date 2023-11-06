@@ -1,14 +1,15 @@
-import { AnimalitoControllerV1 } from '../controller/rest/v1/animalito.controller.v1.js';
-import { AnimalitoControllerV1Impl } from '../controller/rest/v1/impl/animalito.controller.v1.impl.js';
-import { MapeadorDeAnimalitosV1Impl } from '../controller/rest/v1/impl/mapper/animalitos.mapper.impl.js';
-import { AnimalitoRepository } from '../persistence/repository/animalito.repository.js';
-import { AnimalitoRepositoryImpl } from '../persistence/repository/impl/animalito.repository.impl.js';
-import { AnimalitoService } from '../service/animalitos.service.js';
-import { EmailService } from '../service/email.service.js';
-import { AnimalitoServiceImpl } from '../service/impl/animalitos.service.impl.js';
-import { EmailsServiceImpl } from '../service/impl/email.service.impl.js';
-import { MapeadorDeAnimalitosImpl } from '../service/impl/mapper/animalitos.mapper.impl.js';
-import { MapeadorDeAnimalitos } from '../service/impl/mapper/animalitos.mapper.js';
+import { AnimalitoControllerV1 } from '../controller/rest/v1/animalito.controller.v1';
+import { AnimalitoControllerV1Impl } from '../controller/rest/v1/impl/animalito.controller.v1.impl';
+import { AnimalitoRouterV1 } from '../controller/rest/v1/impl/animalitos.router.v1';
+import { MapeadorDeAnimalitosV1Impl } from '../controller/rest/v1/impl/mapper/animalitos.mapper.impl';
+import { AnimalitoRepository } from '../persistence/repository/animalito.repository';
+import { AnimalitoRepositoryImpl } from '../persistence/repository/impl/animalito.repository.impl';
+import { AnimalitoService } from '../service/animalitos.service';
+import { EmailService } from '../service/email.service';
+import { AnimalitoServiceImpl } from '../service/impl/animalitos.service.impl';
+import { EmailsServiceImpl } from '../service/impl/email.service.impl';
+import { MapeadorDeAnimalitosImpl } from '../service/impl/mapper/animalitos.mapper.impl';
+import { MapeadorDeAnimalitos } from '../service/impl/mapper/animalitos.mapper';
 
 
 
@@ -18,7 +19,6 @@ export function getAnimalitosRepository(): AnimalitoRepository {
 }
 
 let emailService = new EmailsServiceImpl();
-
 export function getEmailService(): EmailService{
     return emailService
 }
@@ -28,20 +28,19 @@ export function getMapeadorDeAnimalitoService(): MapeadorDeAnimalitos{
     return mapeadorDeAnimalitos;
 }
 
-let servicioDeAnimalitos = new AnimalitoServiceImpl(getAnimalitosRepository(), getEmailService(), getMapeadorDeAnimalitoService());
-
+let servicioDeAnimalitos = new AnimalitoServiceImpl(getAnimalitosRepository(), getEmailService(), getMapeadorDeAnimalitoService()); // Inyección de dependencias
 export function getAnimalitosService():AnimalitoService{
     return servicioDeAnimalitos;
 }
 
 let mapeadorDeAnimalitosController = new MapeadorDeAnimalitosV1Impl();
-
 export function getMapeadorDeAnimalitosController(): MapeadorDeAnimalitosV1Impl{
     return mapeadorDeAnimalitosController;
 }
 
-let controladorDeAnimalitos = new AnimalitoControllerV1Impl(getMapeadorDeAnimalitosController(), getAnimalitosService());
-
+let controladorDeAnimalitos = new AnimalitoControllerV1Impl(getMapeadorDeAnimalitosController(), getAnimalitosService());   // Inyección de dependencias
 export function getAnimalitosController(): AnimalitoControllerV1{
     return controladorDeAnimalitos;
 }
+
+export const EnrutadorControladorRestV1DeAnimalitos = new AnimalitoRouterV1(getAnimalitosController())

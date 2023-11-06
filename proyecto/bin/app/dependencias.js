@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAnimalitosController = exports.getMapeadorDeAnimalitosController = exports.getAnimalitosService = exports.getMapeadorDeAnimalitoService = exports.getEmailService = exports.getAnimalitosRepository = void 0;
+exports.EnrutadorControladorRestV1DeAnimalitos = exports.getAnimalitosController = exports.getMapeadorDeAnimalitosController = exports.getAnimalitosService = exports.getMapeadorDeAnimalitoService = exports.getEmailService = exports.getAnimalitosRepository = void 0;
 const animalito_controller_v1_impl_js_1 = require("../controller/rest/v1/impl/animalito.controller.v1.impl.js");
+const animalitos_router_v1_js_1 = require("../controller/rest/v1/impl/animalitos.router.v1.js");
 const animalitos_mapper_impl_js_1 = require("../controller/rest/v1/impl/mapper/animalitos.mapper.impl.js");
 const animalito_repository_impl_js_1 = require("../persistence/repository/impl/animalito.repository.impl.js");
 const animalitos_service_impl_js_1 = require("../service/impl/animalitos.service.impl.js");
@@ -22,7 +23,7 @@ function getMapeadorDeAnimalitoService() {
     return mapeadorDeAnimalitos;
 }
 exports.getMapeadorDeAnimalitoService = getMapeadorDeAnimalitoService;
-let servicioDeAnimalitos = new animalitos_service_impl_js_1.AnimalitoServiceImpl(getAnimalitosRepository(), getEmailService(), getMapeadorDeAnimalitoService());
+let servicioDeAnimalitos = new animalitos_service_impl_js_1.AnimalitoServiceImpl(getAnimalitosRepository(), getEmailService(), getMapeadorDeAnimalitoService()); // Inyección de dependencias
 function getAnimalitosService() {
     return servicioDeAnimalitos;
 }
@@ -32,8 +33,9 @@ function getMapeadorDeAnimalitosController() {
     return mapeadorDeAnimalitosController;
 }
 exports.getMapeadorDeAnimalitosController = getMapeadorDeAnimalitosController;
-let controladorDeAnimalitos = new animalito_controller_v1_impl_js_1.AnimalitoControllerV1Impl(getMapeadorDeAnimalitosController(), getAnimalitosService());
+let controladorDeAnimalitos = new animalito_controller_v1_impl_js_1.AnimalitoControllerV1Impl(getMapeadorDeAnimalitosController(), getAnimalitosService()); // Inyección de dependencias
 function getAnimalitosController() {
     return controladorDeAnimalitos;
 }
 exports.getAnimalitosController = getAnimalitosController;
+exports.EnrutadorControladorRestV1DeAnimalitos = new animalitos_router_v1_js_1.AnimalitoRouterV1(getAnimalitosController());

@@ -47,7 +47,7 @@ export class AnimalitoControllerV1Impl implements AnimalitoControllerV1{
         });
     }
     update(id: number, animalito: Partial<DatosAnimalitoRestV1>): Promise<HttpRespuesta<AnimalitoRestV1>> {
-        return this.intentar(200,async ()=>{
+        return this.intentar<AnimalitoRestV1>(200,async ()=>{
             const animalitoDTO = this.mapeadorDeAnimalitos.toDatosAModificarDTO(animalito);
             const animalitoActualizado = await this.animalitoService.update(id, animalitoDTO);
             return this.mapeadorDeAnimalitos.toAnimalitoRestV1(animalitoActualizado);
