@@ -3,7 +3,7 @@ import { AnimalitoControllerV1Impl } from '../controller/rest/v1/impl/animalito.
 import { AnimalitoRouterV1 } from '../controller/rest/v1/impl/animalitos.router.v1';
 import { MapeadorDeAnimalitosV1Impl } from '../controller/rest/v1/impl/mapper/animalitos.mapper.impl';
 import { AnimalitoRepository } from '../persistence/repository/animalito.repository';
-import { AnimalitoRepositoryImpl } from '../persistence/repository/impl/animalito.repository.impl';
+import { AnimalitoRepositoryImpl } from '../persistence/repository/impl/animalito.repository.mysql.impl';
 import { AnimalitoService } from '../service/animalitos.service';
 import { EmailService } from '../service/email.service';
 import { AnimalitoServiceImpl } from '../service/impl/animalitos.service.impl';
@@ -11,8 +11,10 @@ import { EmailsServiceImpl } from '../service/impl/email.service.impl';
 import { MapeadorDeAnimalitosImpl } from '../service/impl/mapper/animalitos.mapper.impl';
 import { MapeadorDeAnimalitos } from '../service/impl/mapper/animalitos.mapper';
 import { AnimalitoWSImpl } from '../controller/ws/animalito.ws.impl';
+import { configSequelize } from './sequelize.config';
 
 
+export const SequelizeInstance = configSequelize()
 
 let animalitosRepository = new AnimalitoRepositoryImpl();
 export function getAnimalitosRepository(): AnimalitoRepository {

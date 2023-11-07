@@ -22,7 +22,7 @@ export class AnimalitoWSImpl implements AnimalitoWS{
     }
 
     configureWs(servidorExpress: Express):Server{
-        this.ws = new Server({server:createServer(servidorExpress)});
+        this.ws = new Server();
         return this.ws;
     }
 

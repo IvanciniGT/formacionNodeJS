@@ -18,7 +18,7 @@ function getExpressServer(){
     app.use(cors())
     // Metemos los enrutadores
     app.use('/api/v1/animalitos', EnrutadorControladorRestV1DeAnimalitos.configureRouter());
-    AnimalitosWebSocket.configureWs(app);
+    //AnimalitosWebSocket.configureWs(app);
     return app;
 }
 
