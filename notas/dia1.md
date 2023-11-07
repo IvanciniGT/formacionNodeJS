@@ -545,3 +545,10 @@ Me permite no evitar pero si frustrar (o al menos ayudarme a ello) 2 tipos de at
   La diferencia con WS es que es un protocolo de comunicación bidireccional... y que no se basa en el concepto de petición/respuesta... sino que se basa en el concepto de mensaje.
 
     HTTP: Request -> Response
+
+// MySQL
+
+SQL: Structured Query Language       mysql2
+ORM: Object Relational Mapping ***   sequelize
+
+// MongoDB
