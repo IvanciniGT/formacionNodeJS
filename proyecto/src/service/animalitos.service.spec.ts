@@ -36,10 +36,10 @@ class EmailServiceMock implements EmailService {
         this.mensaje = mensaje;
     }
     enviarEmail(destinatario: string, asunto: string, mensaje: string): Promise<void> {
-        if(this.destinatario !== destinatario) return Promise.reject("Destinatario incorrecto")
-        if(this.asunto !== asunto) return Promise.reject("Asunto incorrecto")
-        if(this.mensaje !== mensaje) return Promise.reject("Mensaje incorrecto")
         this.llamada = true;
+        if(this.destinatario !== destinatario) return Promise.reject(new Error("Destinatario incorrecto"))
+        if(this.asunto !== asunto) return Promise.reject(new Error("Asunto incorrecto"))
+        if(this.mensaje !== mensaje) return Promise.reject(new Error("Mensaje incorrecto"))
         return Promise.resolve();
     }
     teHanLlamado(): boolean {
@@ -47,12 +47,17 @@ class EmailServiceMock implements EmailService {
     }
 }
 class RepositorioDeAnimalitosFake implements AnimalitoRepository{ 
+    private lastAnimalitoCreated: Animalito | undefined = undefined;
     newAnimalito(animalito: DatosAnimalito): Promise<Animalito> {
-        if(animalito.nombre === "") return Promise.reject("Nombre vacio") // FAKE -.> Implemetacion real
-        return Promise.resolve({...animalito, id: -155})  // STUB
+        if(animalito.nombre === "") return Promise.reject(new Error("Nombre vacio")) // FAKE -.> Implemetacion real
+        this.lastAnimalitoCreated= {...animalito, id: -155}
+        return Promise.resolve(this.lastAnimalitoCreated)
     }
     get(id: number): Promise<Animalito | undefined> {
-        throw new Error("Method not implemented.");
+        if(this.lastAnimalitoCreated && this.lastAnimalitoCreated.id === id)
+            return Promise.resolve(this.lastAnimalitoCreated)
+        else
+            return Promise.resolve(undefined)
     }
     delete(id: number): Promise<Animalito> {
         throw new Error("Method not implemented.");
@@ -88,7 +93,7 @@ let emailServiceMock = new EmailServiceMock()
 function getServicioDeAnimalitos(): AnimalitoService {
     // Tendré que hacer que funcione contra el repo de pacotilla
     // TODO
-    return new AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceSpy, getMapeadorDeAnimalitoService());
+    return new AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceMock, getMapeadorDeAnimalitoService());
 }
 
 // UNITARIAS DEL SERVICIO DE ANIMALITOS
@@ -105,7 +110,7 @@ describe("Dado un servicio de animalitos", () => {
     let nombre = "Mauricio";
     let raza = "Bulldog";
     let edad = 1;
-    describe("Creación de animalito", () => {
+    describe("se puede crear un animalito", () => {
         // Configuro el mock del servicio de emails
         emailServiceMock.teTamaranConEstosDatos("altas@animalitos-fermin.com","Nuevo animalito",`Se ha dado de alta un nuevo animalito con nombre ${nombre}`)
 
@@ -120,22 +125,22 @@ describe("Dado un servicio de animalitos", () => {
         })
 
         // ESTO SERIA MEDIANTE UN SPY
-        it("y se envía un email a altas@animalitos-fermin.com ...", async () => {
+        /*it("y se envía un email a altas@animalitos-fermin.com ...", async () => {
             expect(emailServiceSpy.destinatario).toEqual("altas@animalitos-fermin.com")
             expect(emailServiceSpy.asunto).toEqual("Nuevo animalito")
             expect(emailServiceSpy.mensaje).toEqual(`Se ha dado de alta un nuevo animalito con nombre ${nombre}`)
-        }) 
+        })*/ 
         // Y envía una notificación a los suscriptores
         // ESTO SERIA MEDIANTE UN MOCK
         it("y se envía un email a altas@animalitos-fermin.com ...", async () => {
-            expect(emailServiceMock.teHanLlamado()).toBeTruthy()
+            expect(emailServiceMock.teHanLlamado()).toBeTrue()
         }) 
 
 
         it("Con datos sin nombre, entonces me devuelve ostion", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito("", raza , edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expect(await servicioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toThrow("Nombre vacio")
+            await expectAsync(servicioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWithError("Nombre vacio")
         })
     })
 
@@ -144,7 +149,7 @@ describe("Dado un servicio de animalitos", () => {
         it("Al pasar el id de un animalito existente, me devuelve sus datos", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, raza , edad);
             let animalito = await servicioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito);
-            let animalitoRecuperado = await servicioDeAnimalitos.get(animalito.id!);
+            let animalitoRecuperado = await servicioDeAnimalitos.get(animalito.id);
             expect(animalitoRecuperado).toBeDefined()
             asegurarDatosDeAnimalito(nombre, raza, edad, animalitoRecuperado!);
             expect(animalitoRecuperado!.id).toEqual(animalito.id)

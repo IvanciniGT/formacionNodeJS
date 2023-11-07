@@ -18,9 +18,9 @@ Esquema del escenario: Dar de alta animalitos en el repo
     Ejemplos:
 
     | nombre | raza        | edad |
-    | "Pipo" | "Caniche"   | 3    |
-    | "Lola" | "Papagayo"  | 5    |
-    | "Toto" | "Cocodrilo" | 2    |
+    | Pipo | Caniche   | 3    |
+    | Lola | Papagayo  | 5    |
+    | Toto | Cocodrilo | 2    |
 
 Esquema del escenario: No debo poder dar de alta animalitos en el repo sin nombre
     Dado         un repositorio de animalitos aislado
@@ -32,23 +32,23 @@ Esquema del escenario: No debo poder dar de alta animalitos en el repo sin nombr
     Ejemplos:
 
     | raza        | edad |
-    | "Caniche"   | 3    |
-    | "Papagayo"  | 5    |
-    | "Cocodrilo" | 2    |
+    | Caniche   | 3    |
+    | Papagayo  | 5    |
+    | Cocodrilo | 2    |
     
 Esquema del escenario: No debo poder dar de alta animalitos en el repo sin raza
     Dado         un repositorio de animalitos aislado
     Y            dado los datos de un nuevo animalito
     Y            entre los datos encuentro el dato "nombre": "<nombre>"
     Y            entre los datos encuentro el dato "edad": <edad>
-    Cuando       solicito al repositorio la persistencia de los datos del nuevo animalito
+    Cuando       voy a solicitar al repositorio la persistencia de los datos del nuevo animalito
     Entonces     devuelve un error de validación
     Ejemplos:
 
     | nombre      | edad |
-    | "Caniche"   | 3    |
-    | "Papagayo"  | 5    |
-    | "Cocodrilo" | 2    |
+    | Caniche   | 3    |
+    | Papagayo  | 5    |
+    | Cocodrilo | 2    |
 
 
 Esquema del escenario: Recuperar un animalito existente en el repo
@@ -68,6 +68,6 @@ Esquema del escenario: Recuperar un animalito existente en el repo
     Ejemplos:
 
     | nombre | raza        | edad |
-    | "Pipo" | "Caniche"   | 3    |
-    | "Lola" | "Papagayo"  | 5    |
-    | "Toto" | "Cocodrilo" | 2    |
+    | Pipo | Caniche   | 3    |
+    | Lola | Papagayo  | 5    |
+    | Toto | Cocodrilo | 2    |

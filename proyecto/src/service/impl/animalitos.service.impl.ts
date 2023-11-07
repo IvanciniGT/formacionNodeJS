@@ -10,9 +10,9 @@ import { MapeadorDeAnimalitos } from "./mapper/animalitos.mapper";
 
 export class AnimalitoServiceImpl implements AnimalitoService {
 
-    private readonly DESTINATARIO = "alta@animalitos-fermin.com";
+    private readonly DESTINATARIO = "altas@animalitos-fermin.com";
     private readonly ASUNTO = "Nuevo animalito";
-    private readonly MENSAJE = "Se ha dado de alta un nuevo animalito: ";
+    private readonly MENSAJE = "Se ha dado de alta un nuevo animalito con nombre ";
     private readonly subscripciones: ((notificacion: NotificacionAnimalito) => void)[] = [];
 
     constructor(private repositorioDeAnimalitos: AnimalitoRepository,

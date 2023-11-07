@@ -42,13 +42,13 @@ class EmailServiceMock {
         this.mensaje = mensaje;
     }
     enviarEmail(destinatario, asunto, mensaje) {
-        if (this.destinatario !== destinatario)
-            return Promise.reject("Destinatario incorrecto");
-        if (this.asunto !== asunto)
-            return Promise.reject("Asunto incorrecto");
-        if (this.mensaje !== mensaje)
-            return Promise.reject("Mensaje incorrecto");
         this.llamada = true;
+        if (this.destinatario !== destinatario)
+            return Promise.reject(new Error("Destinatario incorrecto"));
+        if (this.asunto !== asunto)
+            return Promise.reject(new Error("Asunto incorrecto"));
+        if (this.mensaje !== mensaje)
+            return Promise.reject(new Error("Mensaje incorrecto"));
         return Promise.resolve();
     }
     teHanLlamado() {
@@ -56,13 +56,20 @@ class EmailServiceMock {
     }
 }
 class RepositorioDeAnimalitosFake {
+    constructor() {
+        this.lastAnimalitoCreated = undefined;
+    }
     newAnimalito(animalito) {
         if (animalito.nombre === "")
-            return Promise.reject("Nombre vacio"); // FAKE -.> Implemetacion real
-        return Promise.resolve(Object.assign(Object.assign({}, animalito), { id: -155 })); // STUB
+            return Promise.reject(new Error("Nombre vacio")); // FAKE -.> Implemetacion real
+        this.lastAnimalitoCreated = Object.assign(Object.assign({}, animalito), { id: -155 });
+        return Promise.resolve(this.lastAnimalitoCreated);
     }
     get(id) {
-        throw new Error("Method not implemented.");
+        if (this.lastAnimalitoCreated && this.lastAnimalitoCreated.id === id)
+            return Promise.resolve(this.lastAnimalitoCreated);
+        else
+            return Promise.resolve(undefined);
     }
     delete(id) {
         throw new Error("Method not implemented.");
@@ -92,7 +99,7 @@ let emailServiceMock = new EmailServiceMock();
 function getServicioDeAnimalitos() {
     // Tendré que hacer que funcione contra el repo de pacotilla
     // TODO
-    return new animalitos_service_impl_1.AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceSpy, (0, dependencias_1.getMapeadorDeAnimalitoService)());
+    return new animalitos_service_impl_1.AnimalitoServiceImpl(new RepositorioDeAnimalitosFake(), emailServiceMock, (0, dependencias_1.getMapeadorDeAnimalitoService)());
 }
 // UNITARIAS DEL SERVICIO DE ANIMALITOS
 //      Servicio de animalitos -> Creación de un animalito
@@ -107,7 +114,7 @@ describe("Dado un servicio de animalitos", () => {
     let nombre = "Mauricio";
     let raza = "Bulldog";
     let edad = 1;
-    describe("Creación de animalito", () => {
+    describe("se puede crear un animalito", () => {
         // Configuro el mock del servicio de emails
         emailServiceMock.teTamaranConEstosDatos("altas@animalitos-fermin.com", "Nuevo animalito", `Se ha dado de alta un nuevo animalito con nombre ${nombre}`);
         it("Con datos guays, entonces me devuelve los mismos datos guays, junto con un ID", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -120,20 +127,20 @@ describe("Dado un servicio de animalitos", () => {
             // Asegurarme que se haya solicitado el envío del email
         }));
         // ESTO SERIA MEDIANTE UN SPY
-        it("y se envía un email a altas@animalitos-fermin.com ...", () => __awaiter(void 0, void 0, void 0, function* () {
-            expect(emailServiceSpy.destinatario).toEqual("altas@animalitos-fermin.com");
-            expect(emailServiceSpy.asunto).toEqual("Nuevo animalito");
-            expect(emailServiceSpy.mensaje).toEqual(`Se ha dado de alta un nuevo animalito con nombre ${nombre}`);
-        }));
+        /*it("y se envía un email a altas@animalitos-fermin.com ...", async () => {
+            expect(emailServiceSpy.destinatario).toEqual("altas@animalitos-fermin.com")
+            expect(emailServiceSpy.asunto).toEqual("Nuevo animalito")
+            expect(emailServiceSpy.mensaje).toEqual(`Se ha dado de alta un nuevo animalito con nombre ${nombre}`)
+        })*/
         // Y envía una notificación a los suscriptores
         // ESTO SERIA MEDIANTE UN MOCK
         it("y se envía un email a altas@animalitos-fermin.com ...", () => __awaiter(void 0, void 0, void 0, function* () {
-            expect(emailServiceMock.teHanLlamado()).toBeTruthy();
+            expect(emailServiceMock.teHanLlamado()).toBeTrue();
         }));
         it("Con datos sin nombre, entonces me devuelve ostion", () => __awaiter(void 0, void 0, void 0, function* () {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito("", raza, edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expect(yield servicioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toThrow("Nombre vacio");
+            yield expectAsync(servicioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWithError("Nombre vacio");
         }));
     });
     describe("Recuperación de animalito existente", () => {

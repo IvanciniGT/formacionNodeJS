@@ -34,17 +34,17 @@ describe("Dado un repositorio de animalitos", () => {
         it("con nombre vacio, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito("", raza , edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Nombre vacio" )
+            await expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( new Error("Nombre vacio") )
         })
         it("con raza vacia, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, "" , edad);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Raza vacia" )
+            await expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( new Error("Raza vacia") )
         })
         it("con edad negativa, entonces me devuelve un error gordo", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, raza , -7);
             // Asegurar que tengo error cuando llamo a la función newAnimalito
-            expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( "Edad negativa" )
+            await expectAsync(repositorioDeAnimalitos.newAnimalito(datosDeNuevoAnimalito)).toBeRejectedWith( new Error("Edad negativa") )
         })
         it("con datos guays, entonces me devuelve los mismos datos guays, junto con un ID", async () => {
             let datosDeNuevoAnimalito = crearDatosDeNuevoAnimalito(nombre, raza , edad);

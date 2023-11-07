@@ -16,9 +16,9 @@ class AnimalitoServiceImpl {
         this.repositorioDeAnimalitos = repositorioDeAnimalitos;
         this.servicioDeEmails = servicioDeEmails;
         this.mapeadorDeAnimalitos = mapeadorDeAnimalitos;
-        this.DESTINATARIO = "alta@animalitos-fermin.com";
+        this.DESTINATARIO = "altas@animalitos-fermin.com";
         this.ASUNTO = "Nuevo animalito";
-        this.MENSAJE = "Se ha dado de alta un nuevo animalito: ";
+        this.MENSAJE = "Se ha dado de alta un nuevo animalito con nombre ";
         this.subscripciones = [];
     }
     newAnimalito(animalito) {
