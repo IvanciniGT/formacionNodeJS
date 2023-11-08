@@ -29,7 +29,7 @@ export async function createAnimalitoSequelizeRepository(sequelize:Sequelize) {
         }
     });
 
-    animalitoSequelizeRepository.sync({ force: false }).then(() => {
+    animalitoSequelizeRepository.sync({ force: true }).then(() => {
         console.log("Tabla creada");
     });
     return animalitoSequelizeRepository;

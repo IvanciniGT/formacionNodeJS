@@ -40,15 +40,16 @@ class AnimalitoRepositoryImpl {
             catch (error) {
                 return Promise.reject(error);
             }
+            const repo = yield this.AnimalitoSequelizeRepository;
             const promesa = new Promise((resolve, reject) => {
-                this.AnimalitoSequelizeRepository.create(animalito).then((animalito) => resolve(animalito.dataValues)).catch((error) => reject(error));
+                repo.create(animalito).then((animalito) => resolve(animalito.dataValues)).catch((error) => reject(error));
             });
             return promesa;
         });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return __classPrivateFieldGet(this, _AnimalitoRepositoryImpl_instances, "m", _AnimalitoRepositoryImpl_intentaBuscarPorId).call(this, id);
+            return __classPrivateFieldGet(this, _AnimalitoRepositoryImpl_instances, "m", _AnimalitoRepositoryImpl_intentaBuscarPorId).call(this, id, () => { }, (reject, resolve) => { resolve(undefined); });
         });
     }
     delete(id) {
@@ -61,8 +62,9 @@ class AnimalitoRepositoryImpl {
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
+            const repo = yield this.AnimalitoSequelizeRepository;
             const promesa = new Promise((resolve, reject) => {
-                this.AnimalitoSequelizeRepository.findAll()
+                repo.findAll()
                     .then(animalitos => {
                     resolve(animalitos.map(animalito => animalito.dataValues));
                 }).catch(error => reject(error));
@@ -72,17 +74,18 @@ class AnimalitoRepositoryImpl {
     }
 }
 exports.AnimalitoRepositoryImpl = AnimalitoRepositoryImpl;
-_AnimalitoRepositoryImpl_instances = new WeakSet(), _AnimalitoRepositoryImpl_intentaBuscarPorId = function _AnimalitoRepositoryImpl_intentaBuscarPorId(id, funcionSiSeRecupera = (animalitoEncontrado) => __awaiter(this, void 0, void 0, function* () { })) {
+_AnimalitoRepositoryImpl_instances = new WeakSet(), _AnimalitoRepositoryImpl_intentaBuscarPorId = function _AnimalitoRepositoryImpl_intentaBuscarPorId(id, funcionSiSeRecupera = (animalitoEncontrado) => __awaiter(this, void 0, void 0, function* () { }), funcionSiNoSeRecupera = (reject, Resolve) => { reject(new Error("Animalito no encontrado")); }) {
     return __awaiter(this, void 0, void 0, function* () {
+        const repo = yield this.AnimalitoSequelizeRepository;
         const promesa = new Promise((resolve, reject) => {
-            this.AnimalitoSequelizeRepository.findByPk(id)
+            repo.findByPk(id)
                 .then((animalitoEncontrado) => __awaiter(this, void 0, void 0, function* () {
                 if (animalitoEncontrado) {
                     funcionSiSeRecupera(animalitoEncontrado)
                         .then(() => resolve(animalitoEncontrado.dataValues)).catch((error) => reject(error));
                 }
                 else {
-                    reject(new Error("Animalito no encontrado"));
+                    funcionSiNoSeRecupera(reject, resolve); //
                 }
             })).catch(error => reject(error));
         });

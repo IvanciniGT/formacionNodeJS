@@ -1,6 +1,6 @@
 version: "2"
 services:
-    mysql:
+    basededatos:
         image:                      mysql:8.2
         container_name:             mi-mysql
         ports:
@@ -12,3 +12,18 @@ services:
             MYSQL_DATABASE:         animalitos
             MYSQL_USER:             usuario
             MYSQL_PASSWORD:         password
+
+    desarrollo:
+        image:                      node:18.18
+        container_name:             desarrollo
+        volumes:
+                                  - $PWD/..:/app
+        working_dir:                /app
+        environment: 
+            DB_NAME:                animalitos
+            DB_USER:                usuario
+            DB_PASS:                password
+            DB_HOST:                basededatos
+        command:
+            - sleep
+            - "3600"
