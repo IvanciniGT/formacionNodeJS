@@ -24,7 +24,7 @@ function createAnimalitoSequelizeRepository(sequelize) {
             allowNull: false
         }
     });
-    animalitoSequelizeRepository.sync({ force: true }).then(() => {
+    animalitoSequelizeRepository.sync({ force: false }).then(() => {
         console.log("Tabla creada");
     });
     return animalitoSequelizeRepository;

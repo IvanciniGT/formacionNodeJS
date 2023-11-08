@@ -22,9 +22,7 @@ const animalito_impl_1 = require("../../model/impl/animalito.impl");
 class AnimalitoRepositoryImpl {
     constructor() {
         _AnimalitoRepositoryImpl_instances.add(this);
-        console.log("Creando el repositorio de animalitos");
-        console.log((0, dependencias_1.getSequelizeInstance)());
-        this.AnimalitoSequelizeRepository = (0, animalito_impl_1.createAnimalitoSequelizeRepository)((0, dependencias_1.getSequelizeInstance)());
+        this.AnimalitoSequelizeRepository = (0, animalito_impl_1.createAnimalitoSequelizeRepository)(dependencias_1.SequelizeInstance);
     }
     validarAnimalito(animalito) {
         if (!animalito.nombre || animalito.nombre === "")
