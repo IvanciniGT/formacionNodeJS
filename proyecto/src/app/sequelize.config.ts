@@ -14,9 +14,7 @@ export function configSequelize( config: Options = {} ):Sequelize {
         port: parseInt(process.env.DB_PORT || '3306'),
         ...config
     }
-    console.log("Conectando a la BBDD", config);
     sequelize = new Sequelize(config)
-    console.log("Conectado a la BBDD", sequelize);
     return sequelize;
 }
 

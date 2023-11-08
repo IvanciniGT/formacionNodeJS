@@ -3,12 +3,12 @@ import { Animalito } from "../../model/animalito";
 import { DatosAnimalito } from "../../model/datos.animalito";
 import { createAnimalitoSequelizeRepository } from "../../model/impl/animalito.impl";
 import { AnimalitoRepository } from "../animalito.repository";
-import { ModelCtor, Model } from 'sequelize';
+import { ModelStatic, Model } from 'sequelize';
 
 
 // Implementar nuestro repositorio de animalitos
 export class AnimalitoRepositoryImpl implements AnimalitoRepository {
-    AnimalitoSequelizeRepository: ModelCtor<Model<Animalito, DatosAnimalito>>;
+    AnimalitoSequelizeRepository: Promise<ModelStatic<Model<Animalito, DatosAnimalito>>>;
 
     constructor(){
         this.AnimalitoSequelizeRepository = createAnimalitoSequelizeRepository(SequelizeInstance);
@@ -20,9 +20,14 @@ export class AnimalitoRepositoryImpl implements AnimalitoRepository {
         if(animalito.edad<0) throw new Error("Edad negativa");
     }
 
-    async #intentaBuscarPorId(id: number, funcionSiSeRecupera: Function = async (animalitoEncontrado: Model<Animalito,DatosAnimalito>) => {}){
+    async #intentaBuscarPorId(id: number, 
+        funcionSiSeRecupera: Function = async (animalitoEncontrado: Model<Animalito,DatosAnimalito>) => {},
+        funcionSiNoSeRecupera: Function = (reject:Function, Resolve: Function) => {reject(new Error("Animalito no encontrado"))}
+        ){
+        const repo = await this.AnimalitoSequelizeRepository
+
         const promesa = new Promise<Animalito>((resolve, reject) => {
-            this.AnimalitoSequelizeRepository.findByPk(id)
+            repo.findByPk(id)
                 .then(
                     async animalitoEncontrado => {
                         if(animalitoEncontrado){
@@ -33,7 +38,7 @@ export class AnimalitoRepositoryImpl implements AnimalitoRepository {
                                 (error:Error) => reject(error)
                             )
                         }else{
-                            reject(new Error("Animalito no encontrado"));
+                            funcionSiNoSeRecupera(reject, resolve); //
                         }
                     }
                 ).catch(
@@ -49,8 +54,9 @@ export class AnimalitoRepositoryImpl implements AnimalitoRepository {
         }catch(error){
             return Promise.reject(error);
         }
+        const repo = await this.AnimalitoSequelizeRepository
         const promesa = new Promise<Animalito>((resolve, reject) => {
-            this.AnimalitoSequelizeRepository.create(animalito).then(
+            repo.create(animalito).then(
                 (animalito) => resolve(animalito.dataValues),
             ).catch(
                 (error) => reject(error)
@@ -59,7 +65,7 @@ export class AnimalitoRepositoryImpl implements AnimalitoRepository {
         return promesa;
     }
     async get(id: number): Promise<Animalito | undefined> {
-        return this.#intentaBuscarPorId(id);
+        return this.#intentaBuscarPorId(id,()=>{}, (reject:Function, resolve: Function) => {resolve(undefined)}    );
     }
 
     async delete(id: number): Promise<Animalito> {
@@ -71,8 +77,9 @@ export class AnimalitoRepositoryImpl implements AnimalitoRepository {
     }
 
     async getAll(): Promise<Animalito[]> {
+        const repo = await this.AnimalitoSequelizeRepository
         const promesa = new Promise<Animalito[]>((resolve, reject) => {
-            this.AnimalitoSequelizeRepository.findAll()
+            repo.findAll()
                 .then(
                     animalitos => {
                         resolve(animalitos.map(animalito => animalito.dataValues));
