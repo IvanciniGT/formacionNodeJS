@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { Animalito } from '../animalito';
 import { DatosAnimalito } from '../datos.animalito';
-import { Sequelize, ModelCtor } from 'sequelize/types';
+import { Sequelize,  ModelStatic } from 'sequelize/types';
 
 // configuración de los modelos que persistireoms a través de SEQUELIZE
 
 
-let animalitoSequelizeRepository: ModelCtor<Model<Animalito, DatosAnimalito>>;
+let animalitoSequelizeRepository: ModelStatic<Model<Animalito, DatosAnimalito>>;
 
-export function createAnimalitoSequelizeRepository(sequelize:Sequelize) {
+export async function createAnimalitoSequelizeRepository(sequelize:Sequelize) {
     animalitoSequelizeRepository = sequelize.define<Model<Animalito,DatosAnimalito>>('Animalito', {
         id: {
             type: DataTypes.INTEGER,
